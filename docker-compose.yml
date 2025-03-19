@@ -1,0 +1,25 @@
+version: '3.9'
+services:
+
+  java_app:
+    container_name: java_app_corto1 # el nombre del contenedor
+    image: pee-java_app:1.0.0  # la Imagen de la aplicación 
+    build: .  
+    ports:
+      - 8080:8080  
+    environment:
+      - DATABASE_URL=jdbc:postgresql://java_db:5432/postgres  # la URL de conexión a la base de datos
+      - DATABASE_USERNAME=postgres  
+      - DATABASE_PASSWORD=postgres  
+    depends_on:
+      - java_db  # nos asegura que el servicio de la base de datos se inicie antes que la app
+      
+  java_db:
+    container_name: java_db  # este es el Nombre del contenedor de PostgreSQL
+    image: postgres:12  
+    ports:
+      - 5432:5432  # Mapea el puerto de PostgreSQL para acceso externo
+    environment:
+      POSTGRES_USER: postgres  # el usuario predeterminado de PostgreSQL seguido de la contraseña
+      POSTGRES_PASSWORD: postgres  
+      POSTGRES_DB: postgres  # esta es la base de datos predeterminada creada al inicio
